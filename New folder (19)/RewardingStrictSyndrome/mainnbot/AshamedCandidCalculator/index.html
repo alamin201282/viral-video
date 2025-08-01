@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="format-detection" content="telephone=no">
+    <title>Premium Ad Reward System</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src='//jagnaimsee.net/vignette.min.js' data-zone='9616405' data-sdk='show_9616405'></script>
+    <script type="text/javascript" src="https://cdn.tgads.space/assets/js/adexium-widget.min.js"></script>
+    <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="ad-notification" id="ad-notification"></div>
+    <div class="video-notification" id="video-notification"></div>
+
+    <div class="container">
+        <div id="home-section" class="content-section active">
+            <div class="header">
+                <div class="header-top">
+                    <div class="app-title">Viral Video Pro</div>
+                    <div class="token-badge">
+                        <span class="token-icon">🔥</span>
+                        <span id="token-count">0</span>
+                        <span>Tokens</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content">
+                <div class="premium-section">
+                    <h2>Premium Videos</h2>
+                    <p class="premium-subtitle">Unlock exclusive content with your tokens</p>
+
+                    <!-- Main video container - will be populated by admin -->
+                    <div class="video-container" id="main-video-container" style="display: none;">
+                        <div class="video-preview">
+                            <div class="video-thumbnail">
+                                <div class="lock-icon">🔒</div>
+                                <div class="play-button">▶</div>
+                            </div>
+                            <div class="video-overlay"></div>
+                        </div>
+
+                        <div class="video-info">
+                            <h3 class="video-title"></h3>
+                            <div class="video-stats">
+                                <span class="views"></span>
+                                <span class="time">⏰ just now</span>
+                            </div>
+
+                            <div class="video-actions">
+                                <div class="token-cost"></div>
+                                <button class="btn-3d btn-unlock" onclick="unlockSpecificVideo(0)">
+                                    🔓 Unlock Video
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="more-videos" id="more-videos-section" style="display: none;">
+                        <h3>More Premium Content</h3>
+                        <div class="video-grid" id="admin-video-grid">
+                            <!-- Videos will be populated by admin -->
+                        </div>
+                    </div>
+
+                    <!-- No videos message -->
+                    <div class="no-videos-message" id="no-videos-message">
+                        <div style="text-align: center; padding: 40px; color: #aaa;">
+                            <div style="font-size: 48px; margin-bottom: 15px;">📹</div>
+                            <h3>No Videos Available</h3>
+                            <p>Admin needs to add videos from the admin panel</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer">
+                <div class="firebase-logo"></div>
+            </div>
+        </div>
+
+        <div id="earn-section" class="content-section">
+            <div class="earn-header">
+                <div class="earn-title">💰 Earn Points</div>
+                <div class="earn-stats-compact">
+                    <div class="stat-item">
+                        <span class="stat-icon">📺</span>
+                        <span class="stat-text">দেখেছেন: <span id="watched-ads">0</span></span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-icon">🎯</span>
+                        <span class="stat-text">পয়েন্ট: <span id="earned-points">0.00</span></span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-icon">⏳</span>
+                        <span class="stat-text">বাকি: <span id="remaining-ads">40</span></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content">
+                <div class="earn-info-box">
+                    <h3>🎁 আয়ের তথ্য</h3>
+                    <div class="earn-details">
+                        <div class="earn-detail-item">
+                            <span>📺 প্রতি এড দেখে পাবেন: <strong>০.৫০ পয়েন্ট + ১০ টোকেন</strong></span>
+                        </div>
+                        <div class="earn-detail-item">
+                            <span>⏰ প্রতি ঘন্টায় সর্বোচ্চ: <strong>২০টি এড</strong></span>
+                        </div>
+                        <div class="earn-detail-item">
+                            <span>📅 প্রতিদিন সর্বোচ্চ: <strong>৪০টি এড</strong></span>
+                        </div>
+                        <div class="earn-detail-item">
+                            <span>🎉 ১০টি এড দেখলে বোনাস: <strong>+১.০০ পয়েন্ট</strong></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="progress-container">
+                    <div class="progress-label">
+                        <span>Progress to Bonus</span>
+                        <span id="ads-progress">0%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progress-fill"></div>
+                    </div>
+                </div>
+                <div class="ad-container">
+                    <div class="ad-label"></div>
+                    <div class="buttons">
+                        <button class="btn-3d" id="watch-ad-btn" onclick="watchAd()">Watch Ad (+ 10 টোকেন)</button>
+                        <button class="btn-3d btn-secondary" id="auto-ad-btn" onclick="startAutoAds()">Auto Show Ads</button>
+                    </div>
+                </div>
+
+
+
+                <div class="tasks-section" id="tasks-section" style="display: none;">
+                    <h3>Available Tasks</h3>
+                    <div id="tasks-list"></div>
+                </div>
+
+                <div class="game-section" id="game-section" style="display: none;">
+                    <h3>Spin Wheel Game</h3>
+                    <div class="spin-wheel-container">
+                        <div class="spin-wheel" id="spin-wheel">
+                            <div class="wheel-segment" data-points="0.25">0.25</div>
+                            <div class="wheel-segment" data-points="0.50">0.50</div>
+                            <div class="wheel-segment" data-points="0.75">0.75</div>
+                            <div class="wheel-segment" data-points="1.00">1.00</div>
+                            <div class="wheel-segment" data-points="0.25">0.25</div>
+                            <div class="wheel-segment" data-points="0.50">0.50</div>
+                        </div>
+                        <button class="btn-3d" id="spin-btn" onclick="spinWheel()">Spin (Cost: 0.10 points)</button>
+                    </div>
+                </div>
+
+                <div class="channel-section">
+                    <button class="btn-3d btn-blue" onclick="window.open('https://t.me/+pTJ7gy2LA70xMzI1', '_blank')">Telegram Channel</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="refer-section" class="content-section">
+            <div class="content">
+                <h2>Refer Friends</h2>
+
+                <div class="referral-stats">
+                    <div class="stat-card">
+                        <h3>Total Referrals</h3>
+                        <div class="value" id="total-referrals">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Referral Earnings</h3>
+                        <div class="value" id="referral-earnings">0.00</div>
+                    </div>
+                </div>
+
+                <div class="referral-info">
+                    <h3>Referral Rewards</h3>
+                    <div class="reward-item">
+                        <span>🎁 প্রতি রেফার: +৫.০০ পয়েন্ট + ২০ টোকেন</span>
+                    </div>
+                    <div class="reward-item">
+                        <span>💰 বন্ধু ১০ পয়েন্ট আয় করলে: +২.০০ পয়েন্ট</span>
+                    </div>
+                    <div class="reward-item">
+                        <span>🚀 বন্ধু ৫০ পয়েন্ট আয় করলে: +১০.০০ পয়েন্ট</span>
+                    </div>
+                    <div class="reward-item">
+                        <span>⭐ বন্ধু ১০০ পয়েন্ট আয় করলে: +২৫.০০ পয়েন্ট</span>
+                    </div>
+                </div>
+
+                <div class="referral-link-section">
+                    <h3>Your Referral Link</h3>
+                    <div class="referral-link-container">
+                        <input type="text" id="referral-link" readonly>
+                        <button class="btn-3d btn-secondary" onclick="copyReferralLink()">Copy Link</button>
+                    </div>
+                    <button class="btn-3d btn-blue" onclick="shareReferralLink()">Share Link</button>
+                </div>
+
+                <div class="referral-leaderboard">
+                    <h3>Top Referrers</h3>
+                    <div id="referral-leaderboard-list">
+                        <div class="leaderboard-item">
+                            <span class="rank">1.</span>
+                            <span class="name">User123</span>
+                            <span class="count">15 referrals</span>
+                        </div>
+                        <div class="leaderboard-item">
+                            <span class="rank">2.</span>
+                            <span class="name">Player456</span>
+                            <span class="count">12 referrals</span>
+                        </div>
+                        <div class="leaderboard-item">
+                            <span class="rank">3.</span>
+                            <span class="name">Winner789</span>
+                            <span class="count">8 referrals</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="referred-friends">
+                    <h3>Your Referred Friends</h3>
+                    <div id="referred-friends-list">
+                        <p class="no-referrals">No referrals yet. Start sharing your link!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <script src="script.js"></script>
+    <nav class="bottom-navigation">
+        <a href="#home" class="bottom-navigation-item active" data-section="home-section">
+            <span class="nav-icon">🏠</span>
+            Home
+        </a>
+        <a href="#earn" class="bottom-navigation-item" data-section="earn-section">
+            <span class="nav-icon">💰</span>
+            Earn
+        </a>
+        <a href="#refer" class="bottom-navigation-item" data-section="refer-section">
+            <span class="nav-icon">👥</span>
+            Refer
+        </a>
+    </nav>
+</body>
+</html>

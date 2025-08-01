@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard</title>
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+  <div id="login-section" class="admin-container">
+    <h1>Admin Login</h1>
+    <form id="admin-login-form">
+      <label>Username:
+        <input type="text" id="admin-username" required>
+      </label><br>
+      <label>Password:
+        <input type="password" id="admin-password" required>
+      </label><br>
+      <button type="submit">Login</button>
+      <div id="login-error" style="color:red;margin-top:10px;display:none;"></div>
+    </form>
+  </div>
+  <div id="dashboard-section" style="display:none;">
+    <div class="admin-container">
+      <h1>Admin Dashboard</h1>
+      <section class="upload-section">
+        <h2>Upload New Video</h2>
+        <form id="video-upload-form">
+          <label>Video Thumbnail Image:
+            <input type="file" id="video-image" accept="image/*" required>
+          </label><br>
+          <label>Video Title:
+            <input type="text" id="video-title" placeholder="Enter video title" required>
+          </label><br>
+          <label>Video Link:
+            <input type="url" id="video-link" placeholder="https://..." required>
+          </label><br>
+          <label>Video Time (e.g., 01:23): 
+            <input type="text" id="video-time" placeholder="MM:SS" required>
+          </label><br>
+          <label>Unlock Token Amount:
+            <input type="number" id="video-token" min="1" value="10" required>
+          </label><br>
+          <label>Views:
+            <input type="number" id="video-views" min="0" value="0" required>
+          </label><br>
+          <button type="submit">Add Video</button>
+        </form>
+        <div id="video-count" style="margin:15px 0;font-weight:bold;"></div>
+        
+        <div class="notification-section" style="margin-top: 20px; padding: 15px; background: rgba(255,255,255,0.1); border-radius: 8px;">
+          <h3>নটিফিকেশন সেটিংস</h3>
+          <p>নতুন ভিডিও আপলোড করলে সব ইউজারকে অটোমেটিক নটিফিকেশন পাঠানো হবে।</p>
+          <button onclick="testNotification()" style="padding: 8px 15px; background: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer;">
+            টেস্ট নটিফিকেশন পাঠান
+          </button>
+        </div>
+        <div id="video-list"></div>
+      </section>
+      <section class="users-section">
+        <h2>Users</h2>
+        <table id="users-table">
+          <thead>
+            <tr>
+              <th>Username</th>
+              <th>Tokens</th>
+              <th>Points</th>
+              <th>Referrals</th>
+              <th>Checkin Streak</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Users will be listed here -->
+          </tbody>
+        </table>
+      </section>
+    </div>
+  </div>
+  <script src="admin.js"></script>
+</body>
+</html>
